@@ -16,10 +16,36 @@ ArgusNFT api is available at `https://api.argusnft.com`.
 In order to use the API, partners will require an `X_ARGUS_ID`. Reach out to the ArgusNFT team at [team@argusnft.com](mailto:team@argusnft.com)
 if you're interested in testing or integrating the API on your platform.
 
-The API currently offer a simple endpoint to test NFT minting history:
+Integrating with the ArgusNFT API is very straightforward and requires a simple "POST" on the following endpoint: `https://api.argusnft.com/native_assets` (see below for the payload).
+
+In order to offer maximum flexibility, we've implemented three different ways of identifying Cardano's NFT:
+
+* Via `policy_id` (hex encoded) and `asset_name` (hex encoded)
+* Via `fingerprint`
+* Via `asset_id` (hex encoded concatenation of policy_id and asset_name)
+
+### Examples
+
+Let's say that the original SpaceBudz `SpaceBud1576` is under investigation. Its `policy_id` is `d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc` and `asset_name` is `SpaceBud1576`.
+
+It is possible to query for the SpaceBudz authenticity in the following ways:
+
+Via `policy_id` and `asset_name`:
+
+```bash
+curl -H 'Content-Type: application/json' -H 'Accept: application' -H 'X_ARGUS_ID: xyz123' -X POST -d '{ "policy_id":"d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc", "asset_name":"537061636542756431353736" }' https://api.argusnft.com/native_assets/verify
+```
+
+Via `fingerprint`:
 
 ```bash
 curl -H 'Content-Type: application/json' -H 'Accept: application' -H 'X_ARGUS_ID: xyz123' -X POST -d '{ "fingerprint": "asset19yf2vds4svv9jnfw289edh4gwr3mr4wphy564z" }' https://api.argusnft.com/native_assets/verify
+```
+
+Via `asset_id`:
+
+```bash
+curl -H 'Content-Type: application/json' -H 'Accept: application' -H 'X_ARGUS_ID: xyz123' -X POST -d '{ "asset_id":"d5e6bf0500378d4f0da4e8dde6becec7621cd8cbf5cbb9b87013d4cc537061636542756431353736" }' https://api.argusnft.com/native_assets/verify
 ```
 
 The response will look something like:
